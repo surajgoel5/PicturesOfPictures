@@ -2,19 +2,21 @@ import cv2
 import os
 import numpy as np
 
-
+########EDIT THESE PARAMS############
 basepath='D:\Pictures\Edinburgh\\'  #Path of All Pictures
 mainimgpath=basepath+'lol1.jpg'
 entries = os.listdir(basepath)
 
-ncol=5  #No. of pics in a single row or column
-nrow=4 
+ncol=20  #No. of pics in a single row or column
+nrow=20
 
-small_res=50  #size of each small pic
+small_res=10  #size of each small pic
 
-overlay_param=10 #parameter to tune when making overlayd image
+overlay_param=1 #parameter to tune when making overlayd image
 
 fmts=['.jpg','.png','jpeg']  #List of last 4 letters of files you want to read from the folder
+
+#####################DONE EDITING PARAMS##########
 
 canvas=np.zeros((nrow*small_res,ncol*small_res,3),dtype='uint8')  #creating a canvas for the whole portrait
 
@@ -22,7 +24,7 @@ imgs=[]  #initilizing arrays
 vals=[[0,0,0]]
 
 
-for ent in entries[:1]:#np.int(ncol*nrow+10)]:
+for ent in entries[:np.int(ncol*nrow+10)]:
     if ent[-4:] in fmts:   #getting all images from folder specified
         img=cv2.imread(basepath+ent)
         h,w,lol=img.shape           # cutting all the images
@@ -35,8 +37,8 @@ for ent in entries[:1]:#np.int(ncol*nrow+10)]:
 del vals[0]
 vals=np.array(vals)
 
-reps=np.floor((ncol*nrow)/len(imgs)).astype(int)
-
+reps=np.ceil((ncol*nrow)/len(imgs)).astype(int)
+#print(reps,len(imgs),np.floor((ncol*nrow)/len(imgs)),(ncol*nrow)/len(imgs))
 imgss=[imgs.copy() for i in range(reps)] # repeating the images into a new array
 valss=[vals.copy() for i in range(reps)]   # repeating the vaerage intenities into a new array
 
@@ -45,12 +47,11 @@ bigimg=cv2.imread(mainimgpath)
 mainimg=cv2.resize(bigimg,(ncol,nrow)).astype('uint8')
 
 k=0
-print('do')
-
 for i in range(nrow):
     for j in range(ncol):
         
-        clr=mainimg[i,j]        
+        clr=mainimg[i,j]   
+            
         if len(imgss[k])==0:  
             k+=1
         idx=np.argmin(np.sum(np.abs(valss[k]-clr),axis=1))  #find picture corresponding intesity of pixel
@@ -63,9 +64,6 @@ for i in range(nrow):
 
 
 canvas=canvas.astype('uint8')
-##Till now you have made collage but it might not be clear because it has very low resolution. 
-##The resolution being the number of pics ina row. So we overlay the main image again and 
-## change intensities of each pixel in the image to get it close to the real image. 
 
 h= small_res*nrow
 w=small_res*ncol
@@ -76,3 +74,4 @@ bigres=cv2.resize(bigimg,(w,h))  #read the image again
 cv2.imwrite("Out.jpg",canvas)   # Save Image without overlay
 
 cv2.imwrite("Out_Overlayed.jpg",np.clip(canvas + np.rint((bigres-canvas)/overlay_param),0,255))  #This saves an overlayed image
+print('Done!')
