@@ -1,2 +1,4 @@
 # PicturesOfPictures
-Create a collage woverlayed on a central image. Its a picture of pictures.
+The program creates a collage by resizing a big picure and seeting each pixel of that big pictre with another smaller picture. 
+
+Results:
