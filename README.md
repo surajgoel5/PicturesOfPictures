@@ -3,11 +3,11 @@ The program creates a collage by resizing a big picure and seeting each pixel of
 
 Results:
 
-![SampleImage](https://github.com/surajgoel5/PicturesOfPictures/samples/Out.jpg)
+![SampleImage](https://github.com/surajgoel5/PicturesOfPictures/blob/master/samples/Out.jpg)
 
 Zoomed Image:
 
-![ZoomedImage](https://github.com/surajgoel5/PicturesOfPictures/samples/zoom.jpg)
+![ZoomedImage](https://github.com/surajgoel5/PicturesOfPictures/blob/master/samples/zoom.jpg)
 
 # Usage
 
