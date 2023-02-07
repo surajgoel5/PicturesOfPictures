@@ -1,6 +1,8 @@
 import cv2
 import os
 import numpy as np
+import random
+from PIL import Image
 
 ########EDIT THESE PARAMS############
 basepath='D:\Pictures\Edinburgh\\'  #Path of All Pictures
@@ -12,7 +14,7 @@ nrow=20
 
 small_res=10  #size of each small pic
 
-overlay_param=1 #parameter to tune when making overlayd image
+overlay_param=0.3 #parameter to tune when making overlayd image
 
 fmts=['.jpg','.png','jpeg']  #List of last 4 letters of files you want to read from the folder
 
@@ -69,9 +71,11 @@ h= small_res*nrow
 w=small_res*ncol
 bigres=cv2.resize(bigimg,(w,h))  #read the image again
 
+canvas_im=Image.fromarray(canvas[:,:,::-1])
+bigres_im=Image.fromarray(bigres[:,:,::-1])
+overlayed_im=Image.blend(canvas_im,bigres_im,alpha=overlay_param)
 
+canvas_im.save(mainimgpath.split('\\')[-1][:-4]+"Out.jpg")# Save Image without overlay
+overlayed_im.save(mainimgpath.split('\\')[-1][:-4]+"Out_Overlayed.jpg")#This saves an overlayed image
 
-cv2.imwrite("Out.jpg",canvas)   # Save Image without overlay
-
-cv2.imwrite("Out_Overlayed.jpg",np.clip(canvas + np.rint((bigres-canvas)/overlay_param),0,255))  #This saves an overlayed image
 print('Done!')
